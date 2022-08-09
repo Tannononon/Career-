@@ -23,12 +23,18 @@
 [
 ](https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfrk55w9cPEoHKZyzE4VWJAfvaicPic6layBp4YQmkpoiaia3fDx1CPhSE7f1sCPEfkI7hn3tkbyKicibibww/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1)[![image](https://user-images.githubusercontent.com/99408013/183676168-e3b80548-f6f2-48f3-9f21-3ba3f8decfe9.png)
 
-](https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfrk55w9cPEoHKZyzE4VWJAfNribvOsbI0PRTia7fymJib6WknWgwjYgBZIuGMn4Fco5ZpPasoMml7ibjA/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1)#![image](https://user-images.githubusercontent.com/99408013/183675970-e35e4921-c4f6-4e09-9243-b53697b940dd.png)
+[
+](https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfrk55w9cPEoHKZyzE4VWJAfNribvOsbI0PRTia7fymJib6WknWgwjYgBZIuGMn4Fco5ZpPasoMml7ibjA/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1)![image](https://user-images.githubusercontent.com/99408013/183676540-2f863f86-1ad6-40a0-8fea-f5cb7b82d258.png)
 
 # 4 CPU与GPU适合的问题
 
 cpu：连续计算问题，延迟优先，单条复杂指令的处理
-gpu：a.计算密集型：数值计算的比例远大于内存操作，因此对内存的访问延时可以被计算掩盖.  b.数据并行型：大任务可以分解为执行相同简单指令的小任务，因此对复杂流程控制的需求较低
+
+gpu：
+
+a.计算密集型：数值计算的比例远大于内存操作，因此对内存的访问延时可以被计算掩盖.  
+
+b.数据并行型：大任务可以分解为执行相同简单指令的小任务，因此对复杂流程控制的需求较低
 
 
 
