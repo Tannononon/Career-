@@ -1,8 +1,54 @@
-0.为什么使用Spark
+## 0.为什么使用Spark
 
 Spark为离线型的数据分析提供了一种方法，既然是离线，那代表他并不占用我的主机的内存，方便我一边做自己的事情，一边让他在HPC集群上面跑任务。他的计算框架对内存的利用和运行的并行度非常高，因此可以大幅减少数据的分析时间，不仅如此他使用了迭代式计算模型，这种模式十分适合机器学习场景，因此对机器学习，尤其是大规模数据的机器学习任务支持的很好，所以我打算尝试使用pyspark，在使用过程中发现spark提供了很人性化简洁的api包括transformer和action等， 不仅如此Spark还支持 SQL 查询，并且有开箱即用的机器学习算法，因此我觉得他是一个很好的工具。
 
-1. 通常来说，Spark与MapReduce相比，Spark运行效率更高。请说明效率更高来源于Spark内置的哪些机制？
+## Spark 介绍
+
+Spark提供了6大组件：
+
+Spark Core
+
+Spark SQL
+
+Spark Streaming
+
+Spark MLlib
+
+Spark GraphX
+
+SparkR
+
+这些组件解决了使用Hadoop时碰到的特定问题。
+
+<img width="439" alt="image" src="https://user-images.githubusercontent.com/99408013/184684618-b6cbe4d5-4e76-46d5-8660-ecf2de3152a8.png">
+
+
+
+*Spark Core
+
+将分布式数据抽象为弹性分布式数据集（RDD），实现了应用任务调度、RPC、序列化和压缩，并为运行在其上的上层组件提供API。所有Spark的上层组件（如：Spark SQL、Spark Streaming、MLlib、GraphX）都建立在Spark Core的基础之上，它提供了内存计算的能力，因此，Spark Core是分布式处理大数据集的基础。
+
+*Spark SQL
+
+Spark Sql 是Spark来操作结构化数据的程序包，可以让我使用SQL语句的方式来查询数据，Spark支持 多种数据源，包含 Hive 表，parquest以及JSON等内容。
+
+*Spark Streaming
+
+除了处理动态数据流，Spark Streaming 还能开发出强大的交互和数据查询程序。事实上，在处理动态数据流时，流数据会被分割成微小的批处理，这些微小批处理将会在Spark Core上按时间一个一个执行，且速度非常快。
+
+*Spark MLlib
+
+Spark MLlib 封装了很多高效的机器学习算法。它是数据科学最热门的选择，因为它是在内存处理数据的，非常有效的提高数据迭代算法的性能。
+
+*Spark GraphX
+
+Spark GraphX一个建立在Spark之上大规模处理图数据的计算引擎。
+
+*SparkR
+
+SparkR 是一个 R 语言包，它提供了轻量级的方式使得可以在 R 语言中使用 Apache Spark。在Spark 1.4中，SparkR 实现了分布式的 data frame，支持类似查询、过滤以及聚合的操作（类似于R中的data frames：dplyr)，但是这个可以操作大规模的数据集。
+
+## 1. 通常来说，Spark与MapReduce相比，Spark运行效率更高。请说明效率更高来源于Spark内置的哪些机制？
 
 spark是借鉴了Mapreduce,并在其基础上发展起来的，继承了其分布式计算的优点并进行了改进，spark生态更为丰富，功能更为强大，性能更加适用范围广，mapreduce更简单，稳定性好。主要区别
 
@@ -18,7 +64,7 @@ spark是借鉴了Mapreduce,并在其基础上发展起来的，继承了其分�
 
 （6）Spark对于executor的优化，在JVM虚拟机的基础上对内存弹性利用：storage memory与Execution memory的弹性扩容，使得内存利用效率更高
 
-2. hadoop和spark使用场景？
+## 2. hadoop和spark使用场景？
 
 Hadoop/MapReduce和Spark最适合的都是做离线型的数据分析，但Hadoop特别适合是单次分析的数据量“很大”的情景，而Spark则适用于数据量不是很大的情景。
 
@@ -26,7 +72,7 @@ Hadoop/MapReduce和Spark最适合的都是做离线型的数据分析，但Hadoo
 
 业务通常认为Spark更适用于机器学习之类的“迭代式”应用，80GB的压缩数据（解压后超过200GB），10个节点的集群规模，跑类似“sum+group-by”的应用，MapReduce花了5分钟，而spark只需要2分钟。
 
-3. hadoop和spark的相同点和不同点？
+## 3. hadoop和spark的相同点和不同点？
 
 Hadoop底层使用MapReduce计算架构，只有map和reduce两种操作，表达能力比较欠缺，而且在MR过程中会重复的读写hdfs，造成大量的磁盘io读写操作，所以适合高时延环境下批处理计算的应用；
 
@@ -36,7 +82,7 @@ spark与hadoop最大的区别在于迭代式计算模型。基于mapreduce框架
 
 但是spark也有劣势，由于spark基于内存进行计算，虽然开发容易，但是真正面对大数据的时候，在没有进行调优的情况下，可能会出现各种各样的问题，比如OOM内存溢出等情况，导致spark程序可能无法运行起来，而mapreduce虽然运行缓慢，但是至少可以慢慢运行完。
 
-4. spark解决了hadoop的哪些问题？
+## 4. spark解决了hadoop的哪些问题？
 
 MR：抽象层次低，需要使用手工代码来完成程序编写，使用上难以上手；
 
@@ -63,13 +109,13 @@ MR：只适合batch批处理，时延高，对于交互式处理和实时处理�
 Spark：Spark streaming可以将流拆成时间间隔的batch进行处理，实时计算。
 
 
-5. spark如何保证宕机迅速恢复?
+## 5. spark如何保证宕机迅速恢复?
 
 适当增加spark standby master
 
 编写shell脚本，定期检测master状态，出现宕机后对master进行重启操作
 
-6. RDD持久化原理？
+## 6. RDD持久化原理？
 
 spark非常重要的一个功能特性就是可以将RDD持久化在内存中。
 
@@ -77,7 +123,7 @@ spark非常重要的一个功能特性就是可以将RDD持久化在内存中。
 
 如果需要从内存中清除缓存，可以使用unpersist()方法。RDD持久化是可以手动选择不同的策略的。在调用persist()时传入对应的StorageLevel即可。
 
-7. RDD机制理解吗？
+## 7. RDD机制理解吗？
 
 rdd分布式弹性数据集，简单的理解成一种数据结构，是spark框架上的通用货币。所有算子都是基于rdd来执行的，不同的场景会有不同的rdd实现类，但是都可以进行互相转换。rdd执行过程中会形成dag图，然后形成lineage保证容错性等。从物理的角度来看rdd存储的是block和node之间的映射。
 
@@ -89,7 +135,7 @@ RDD在逻辑上是一个hdfs文件，在抽象上是一种元素集合，包含�
 
 RDD的数据默认存放在内存中，但是当内存资源不足时，spark会自动将RDD数据写入磁盘。比如某结点内存只能处理20W数据，那么这20W数据就会放入内存中计算，剩下10W放到磁盘中。RDD的弹性体现在于RDD上自动进行内存和磁盘之间权衡和切换的机制。
 
-8. Spark streaming以及基本工作原理？
+## 8. Spark streaming以及基本工作原理？
 
 Spark streaming是spark core API的一种扩展，可以用于进行大规模、高吞吐量、容错的实时数据流的处理。
 
@@ -97,7 +143,7 @@ Spark streaming是spark core API的一种扩展，可以用于进行大规模、
 
 Spark streaming内部的基本工作原理是：接受实时输入数据流，然后将数据拆分成batch，比如每收集一秒的数据封装成一个batch，然后将每个batch交给spark的计算引擎进行处理，最后会生产处一个结果数据流，其中的数据也是一个一个的batch组成的。
 
-9.1 spark有哪些组件？
+## 9.1 spark有哪些组件？
 
 master：管理集群和节点，不参与计算。
 
@@ -109,11 +155,11 @@ spark context：控制整个application的生命周期，包括dagsheduler和tas
 
 client：用户提交程序的入口。
 
-9.2. spark工作机制？
+## 9.2. spark工作机制？
 
 用户在client端提交作业后，会由Driver运行main方法并创建spark context上下文。执行add算子，形成dag图输入dagscheduler，按照add之间的依赖关系划分stage输入task scheduler。task scheduler会将stage划分为task set分发到各个节点的executor中执行。
 
-13. 说下宽依赖和窄依赖
+## 10. 说下宽依赖和窄依赖
 
 宽依赖：
 
@@ -123,7 +169,7 @@ client：用户提交程序的入口。
 
 父RDD和子RDD的partition之间的对应关系是一对一的。
 
-16. 数据倾斜的产生和解决办法？
+## 11. 数据倾斜的产生和解决办法？
 
 数据倾斜以为着某一个或者某几个partition的数据特别大，导致这几个partition上的计算需要耗费相当长的时间。
 
@@ -147,7 +193,7 @@ client：用户提交程序的入口。
 
 如下算子会导致shuffle操作，是导致数据倾斜可能发生的关键点所在：groupByKey；reduceByKey；aggregaByKey；join；cogroup；
 
-17. 你用sparksql处理的时候， 处理过程中用的dataframe还是直接写的sql？为什么？
+## 17. 你用sparksql处理的时候， 处理过程中用的dataframe还是直接写的sql？为什么？
 
 这个问题的宗旨是问你spark sql 中dataframe和sql的区别，从执行原理、操作方便程度和自定义程度来分析这个问题。
 
